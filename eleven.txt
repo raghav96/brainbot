@@ -1,0 +1,52 @@
+# Pseudocode for the mind controlled robot mbot 
+
+when <flag> clicked:
+	forever:
+		set att = 0
+		set med = 0
+		set blink = False
+		# Setting default face
+		mbot.drawing.face(SMILE_FACE)
+
+
+		# MODE A :: Allows robot to move forward based on attention span
+		On remote A clicked:
+			forever:
+				set att_t = neurosky.attention.getvalue()
+				mbot.drawing.face(FOCUS_FACE)
+				att = att + (constant to pad the values)*normalize(att_t, -255, 255)
+				rounded_off_att = att.closestNeighbour(att, [-255, -100, -50, 0, 50, 100, 255])
+				mbot.setspeed(att)
+
+		# MODE B :: Allows robot to spin circles at different angles based on meditation measure
+		On remote B clicked:
+			forever:
+				set med_t = neurosky.meditation.getvalue()
+				mbot.drawing.face(CALM_FACE)
+				med = med + (constant to pad the values)*normalize(med_t, 0, 255)
+				rounded_off_med = med.closestNeighbour(med, [0, 50, 100, 255])
+				mbot.setangleofturn(med)
+				mbot.setspeed(50)
+
+		# MODE C :: Allows robot to blink based on blink detection mode
+		On remote C clicked:
+			forever:
+				set blink = Boolean[neurosky.blinkdetection.getblink()]
+				if blink = True:
+					mbot.drawing.face(BLINK_FACE)
+					mbot.wait(1)
+				if blink = False:
+					mbot.drawing.face(SMILE_FACE)
+					mbot.wait(1)
+
+		On remote D clicked:
+			forever:
+				mbot.drawing.face(SMILE_FACE)
+				mbot.wait(5)
+				mbot.tone(play some cool sound)
+				mbot.showcharacters(I am 11)
+				mbot.showcharacters(The end)
+
+
+
+
